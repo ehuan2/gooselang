@@ -1,7 +1,14 @@
 package tokenizer
 
-import "fmt"
+import (
+	"gooselang/AST"
+	"strings"
+)
 
-func Tokenizer() {
-	fmt.Println("called the tokenizer...")
+func Parse(files string) AST.AST {
+	words := strings.Fields(files)
+	tokens := Tokenize(words)
+	sexps := ParseSExp(tokens)
+
+	return AST.MakeVar("x")
 }

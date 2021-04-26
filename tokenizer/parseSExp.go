@@ -43,10 +43,11 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 	out := SExpListNode{}
 
 	for position < len(tokens) {
-		
+		t := tokens[position]
 	}
 
 	return out, position
+
 }
 
 

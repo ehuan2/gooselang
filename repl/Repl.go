@@ -19,10 +19,11 @@ func Repl(in io.Reader, out io.Writer) {
 		}
 
 		line := scanner.Text()
-		ast := tokenizer.Parse(line)
+		asts := tokenizer.Parse(line)
 
-		ast.PrintAST()
-		fmt.Println()
+		for _, ast := range asts {
+			ast.PrintAST()
+		}
 
 		if line == "FLY" {
 			return

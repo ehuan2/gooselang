@@ -1,14 +1,22 @@
 package tokenizer
 
 import (
+	"fmt"
 	"gooselang/AST"
 	"strings"
 )
 
-func Parse(files string) AST.AST {
+// func isImproperVar(id string) bool {
+// 	return id == "Honk" || id == "honK" || id == "FLY" || id == "Goose" || id == "Gosling"
+// }
+
+func Parse(files string) []AST.AST {
 	words := strings.Fields(files)
 	tokens := Tokenize(words)
 	sexps := ParseSExp(tokens)
-
-	return AST.MakeVar("x")
+	for _, sexp := range sexps {
+		PrintSExp(sexp)
+		fmt.Println()
+	}
+	return nil
 }

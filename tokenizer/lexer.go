@@ -28,6 +28,7 @@ func scan(word string) Token {
 			return token
 		case "FLY":
 			token.tokenType = DONE
+			token.value = "Fly away little goose"
 			return token
 		default:
 			token.tokenType = ID
@@ -43,6 +44,8 @@ func Tokenize(words []string) []Token {
 		tokens[i] = scan(word)
 		printToken(tokens[i])
 	}
+
+	fmt.Println()
 
 	return tokens
 }

@@ -33,8 +33,10 @@ func main() {
 
 		file.Close()
 
-		ast := tokenizer.Parse(outString)
-		ast.PrintAST()
+		asts := tokenizer.Parse(outString)
+		for _, ast := range asts {
+			ast.PrintAST()
+		}
 		
 	}
 }

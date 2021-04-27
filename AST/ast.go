@@ -56,3 +56,11 @@ type Honk struct {
 	fn AST
 	arg AST
 }
+
+func (f Fly) PrintAST() {
+	fmt.Printf("FLY")
+}
+func MakeFly() Fly {
+	return Fly{}
+}
+type Fly struct {}

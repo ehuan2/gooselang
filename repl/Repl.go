@@ -23,6 +23,7 @@ func Repl(in io.Reader, out io.Writer) {
 
 		for _, ast := range asts {
 			ast.PrintAST()
+			fmt.Println()
 		}
 
 		if line == "FLY" {

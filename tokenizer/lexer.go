@@ -52,7 +52,7 @@ func scan(word string) Token {
 	}
 }
 
-func Tokenize(words []string) []Token {
+func tokenize(words []string) []Token {
 	tokens := make([]Token, len(words))
 
 	for i, word := range words {

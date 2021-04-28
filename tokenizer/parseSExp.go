@@ -76,7 +76,7 @@ type Empty struct {
 	notSExpListNode
 }
 
-func IsBadList(list SExpListNode) bool {
+func isBadList(list SExpListNode) bool {
 	return list.first.getType() == BADSEXP
 }
 
@@ -86,6 +86,15 @@ func generateBadList() SExpListNode {
 
 func generateEmptyList() SExpListNode {
 	return SExpListNode{first: Empty{}, rest: nil}
+}
+
+func length(list SExpListNode) int {
+	curLength := 0
+	for list.rest != nil && (list.rest.first.getType() != BADSEXP || list.rest.first.getType() != EMPTY) {
+		curLength++
+		list = *list.rest
+	}
+	return curLength
 }
 
 // given the list of tokens, as well as the position of the next int, parse through the sexp list
@@ -136,7 +145,7 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 		var recurList SExpListNode
 		recurList, position = parseSExpList(tokens, position + 3)
 
-		if IsBadList(recurList) {
+		if isBadList(recurList) {
 			return badList, position
 		}
 
@@ -145,31 +154,28 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 		// now we need to check if HONK comes after the function, ie is an application
 		if position < length {
 			if tokens[position].tokenType == HONK {
-
 				honkToken := tokens[position]
-
 				var sexpArg SExp
-				sexpArg, position = ParseSingleSExp(tokens , position + 1)
-
+				sexpArg, position = parseSingleSExp(tokens , position + 1)
 				// in case it's a bad sexpression, return bad list
 				if sexpArg.getType() == BADSEXP {
 					return generateBadList(), length
 				}
-
 				// in case it's a list and is malformed, return bad list
 				if sexpArg.getType() == LIST {
-					if IsBadList(sexpArg.getSExpListNode()) {
+					if isBadList(sexpArg.getSExpListNode()) {
 						return generateBadList(), length
 					}
 				}
-
 				emptyList := generateEmptyList()
 				// now it's good, we add HONK as first, argument as second, function as third
 				out.first = SExpListNode{first: Atom{atom: honkToken}, rest: &SExpListNode{first: sexpArg, rest: &SExpListNode{first: nextSExp, rest: &emptyList}}}
-
+			} else {
+				out.first = nextSExp
 			}
+		} else {
+			out.first = nextSExp
 		}
-
 	}
 
 	if t.tokenType == ID || t.tokenType == DONE {
@@ -180,7 +186,7 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 	rest := SExpListNode{}
 	rest, position = parseSExpList(tokens, position)
 
-	if IsBadList(rest) {
+	if isBadList(rest) {
 		return badList, position
 	}
 
@@ -190,7 +196,7 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 }
 
 // turns a stream of tokens and makes the first available sexpression out of them
-func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
+func parseSingleSExp(tokens []Token, i int) (SExp, int) {
 
 	// prelim. checking to make sure we don't go over
 	length := len(tokens)
@@ -234,7 +240,7 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 		// gosling we skip over the Honk as well
 		if tokenType == GOOSE {
 			var sexp SExp
-			sexp, i = ParseSingleSExp(tokens, i + 2)
+			sexp, i = parseSingleSExp(tokens, i + 2)
 
 			// add in body of goose, finish with empty
 			rest := SExpListNode{first: sexp, rest: &SExpListNode{first: Empty{}}}
@@ -253,8 +259,7 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 			}
 
 			sexpListNode, i = parseSExpList(tokens, i + 3)
-
-			if IsBadList(sexpListNode) {
+			if isBadList(sexpListNode) {
 				return generateBadList(), i
 			}
 
@@ -267,7 +272,7 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 					honkToken := tokens[i]
 
 					var sexpArg SExp
-					sexpArg, i = ParseSingleSExp(tokens , i + 1)
+					sexpArg, i = parseSingleSExp(tokens , i + 1)
 
 					// in case it's a bad sexpression, return bad list
 					if sexpArg.getType() == BADSEXP {
@@ -276,7 +281,7 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 
 					// in case it's a list and is malformed, return bad list
 					if sexpArg.getType() == LIST {
-						if IsBadList(sexpArg.getSExpListNode()) {
+						if isBadList(sexpArg.getSExpListNode()) {
 							return generateBadList(), length
 						}
 					}
@@ -297,7 +302,7 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 }
 
 // turns the tokens into sexpressions
-func ParseSExp(tokens []Token) []SExp {
+func parseSExp(tokens []Token) []SExp {
 	// strategy: go through each of the tokens, grouping when possible
 	// worst case scenario, all of the sexps are individual, we have to make out the same size of length, we'll deal with cutting it down afterwards
 
@@ -306,14 +311,14 @@ func ParseSExp(tokens []Token) []SExp {
 	out := make([]SExp, length)
 
 	for i := 0; i < length; {
-		out[sexpCounter], i = ParseSingleSExp(tokens, i)
+		out[sexpCounter], i = parseSingleSExp(tokens, i)
 		sexpCounter++
 	}
 
 	return out[0:sexpCounter]
 }
 
-func PrintSExp(s SExp) {
+func printSExp(s SExp) {
 	sType := s.getType()
 
 	if sType == ATOM {
@@ -322,19 +327,19 @@ func PrintSExp(s SExp) {
 
 		list := s.getSExpListNode()
 
-		if IsBadList(list) {
+		if isBadList(list) {
 			fmt.Printf("Bad list...")
 			return
 		}
 
 		fmt.Printf("LIST(")
 		for elem := list.first; list.rest != nil && (list.rest.first.getType() != BADSEXP || list.rest.first.getType() != EMPTY); {
-			PrintSExp(elem)
+			printSExp(elem)
 			elem = list.rest.first
 			list = *list.rest
 		}
 
-		PrintSExp(list.first)
+		printSExp(list.first)
 		fmt.Printf(")")
 	} else if sType == BADSEXP {
 		fmt.Printf("Bad Sexp...")

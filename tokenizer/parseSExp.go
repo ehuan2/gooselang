@@ -220,6 +220,11 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 			}
 
 			sexpListNode, i = parseSExpList(tokens, i + 3)
+
+			if IsBadList(sexpListNode) {
+				return generateBadList(), i
+			}
+
 			nextSExp.rest.rest = &sexpListNode // we skip over SExpListNode, that's why we only have two rest's
 
 		}
@@ -269,5 +274,7 @@ func PrintSExp(s SExp) {
 
 		PrintSExp(list.first)
 		fmt.Printf(")")
+	} else if sType == BADSEXP {
+		fmt.Printf("Bad Sexp...")
 	}
 }

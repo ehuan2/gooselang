@@ -8,7 +8,8 @@ Here are the commands:
 | honK | ends a body declaration equivalent to ) | Honk ... honK |
 | Gosling | anonymous function declaration, same as lambda, followed by variable name | Fowl var-name Honk ... honK |
 | Goose | global statement, always followed by a var name or a Fowl | Goose var-name or Goose Fowl var-name Honk ... honK |
-| HONK | turns some specially structured functions into a Go number and prints it | see more about lambda calculus' representation of binary representation of numbers |
+| HONK | applies an argument to a function | fn HONK arg |
+| Hatch | turns some specially structured functions into a Go number and prints it | see more about lambda calculus' representation of binary representation of numbers |
 | honk | turns a Go natural number into a specially structured function of lambda calculus' binary representation | see more about lambda calculus |
 <!-- | HonK | represents true, ie HonK = Fowl x Honk Fowl y x honK honK | use as normal | -->
 <!-- | hONk | represents false, ie hONk = Fowl x Honk Fowl y y honK honK | use as normal | -->

@@ -12,6 +12,7 @@ const (
 	ERROR   TokenType = 4
 	GOOSE   TokenType = 5
 	GOSLING TokenType = 6
+	HONK		TokenType = 7
 )
 
 type Token struct {
@@ -39,6 +40,10 @@ func scan(word string) Token {
 	case "Gosling":
 		token.tokenType = GOSLING
 		token.value = "Gosling"
+		return token
+	case "HONK":
+		token.tokenType = HONK
+		token.value = "HONK"
 		return token
 	default:
 		token.tokenType = ID
@@ -72,6 +77,8 @@ func printToken(token Token) {
 			fmt.Printf("(GOOSE)")
 		case GOSLING:
 			fmt.Printf("(GOSLING)")
+		case HONK:
+			fmt.Printf("~HONK~")
 		default:
 			fmt.Printf("ID(%s)", token.value)
 	}

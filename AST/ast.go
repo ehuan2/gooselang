@@ -64,3 +64,8 @@ func MakeFly() Fly {
 	return Fly{}
 }
 type Fly struct {}
+
+func (b BadAst) PrintAST() {
+	fmt.Printf("Bad GooseLang")
+}
+type BadAst struct {}

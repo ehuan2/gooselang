@@ -84,6 +84,10 @@ func generateBadList() SExpListNode {
 	return SExpListNode{first: BadSExp{}, rest: nil}
 }
 
+func generateEmptyList() SExpListNode {
+	return SExpListNode{first: Empty{}, rest: nil}
+}
+
 // given the list of tokens, as well as the position of the next int, parse through the sexp list
 func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 	// we keep iterating until we hit the RPAREN
@@ -118,6 +122,7 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 		if tokens[position + 1].tokenType != ID {
 			return generateBadList(), position + 1 // move onto the next one, assume current one is broken, but we don't move to end
 		}
+
 		nextSExp.rest = &SExpListNode{first: Atom{atom: tokens[position + 1]}}
 
 		if position + 2 >= length {
@@ -136,7 +141,35 @@ func parseSExpList(tokens []Token, position int) (SExpListNode, int) {
 		}
 
 		nextSExp.rest.rest = &recurList // we skip over SExpListNode, that's why we only have two rest's
-		out.first = nextSExp
+
+		// now we need to check if HONK comes after the function, ie is an application
+		if position < length {
+			if tokens[position].tokenType == HONK {
+
+				honkToken := tokens[position]
+
+				var sexpArg SExp
+				sexpArg, position = ParseSingleSExp(tokens , position + 1)
+
+				// in case it's a bad sexpression, return bad list
+				if sexpArg.getType() == BADSEXP {
+					return generateBadList(), length
+				}
+
+				// in case it's a list and is malformed, return bad list
+				if sexpArg.getType() == LIST {
+					if IsBadList(sexpArg.getSExpListNode()) {
+						return generateBadList(), length
+					}
+				}
+
+				emptyList := generateEmptyList()
+				// now it's good, we add HONK as first, argument as second, function as third
+				out.first = SExpListNode{first: Atom{atom: honkToken}, rest: &SExpListNode{first: sexpArg, rest: &SExpListNode{first: nextSExp, rest: &emptyList}}}
+
+			}
+		}
+
 	}
 
 	if t.tokenType == ID || t.tokenType == DONE {
@@ -226,6 +259,35 @@ func ParseSingleSExp(tokens []Token, i int) (SExp, int) {
 			}
 
 			nextSExp.rest.rest = &sexpListNode // we skip over SExpListNode, that's why we only have two rest's
+
+			// now we need to check if HONK comes after the function, ie is an application
+			if i < length {
+				if tokens[i].tokenType == HONK {
+
+					honkToken := tokens[i]
+
+					var sexpArg SExp
+					sexpArg, i = ParseSingleSExp(tokens , i + 1)
+
+					// in case it's a bad sexpression, return bad list
+					if sexpArg.getType() == BADSEXP {
+						return generateBadList(), length
+					}
+
+					// in case it's a list and is malformed, return bad list
+					if sexpArg.getType() == LIST {
+						if IsBadList(sexpArg.getSExpListNode()) {
+							return generateBadList(), length
+						}
+					}
+
+					emptyList := generateEmptyList()
+					// now it's good, we add HONK as first, argument as second, function as third
+					outList := SExpListNode{first: Atom{atom: honkToken}, rest: &SExpListNode{first: sexpArg, rest: &SExpListNode{first: nextSExp, rest: &emptyList}}}
+					return outList, i
+
+				}
+			}
 
 		}
 

@@ -1,7 +1,6 @@
 package tokenizer
 
 import (
-	"fmt"
 	"gooselang/AST"
 	"strings"
 )
@@ -93,7 +92,8 @@ func doParse(sexp SExp) (AST.AST) {
 			arg := doParse(list.rest.first)
 			fnSExp := list.rest.rest.first
 			fn := doParse(fnSExp)
-			return AST.MakeHonk(fn, arg)
+			// we reverse it
+			return AST.MakeHonk(arg, fn)
 
 		}
 		
@@ -111,11 +111,6 @@ func Parse(files string) []AST.AST {
 	length := len(sexps)
 	astCounter := 0
 	out := make([]AST.AST, length)
-
-	for _, sexp := range sexps {
-		printSExp(sexp)
-		fmt.Println()
-	}
 
 	for i := 0; i < length; i++ {
 		out[astCounter] = doParse(sexps[i])

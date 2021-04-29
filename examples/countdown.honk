@@ -1,0 +1,9 @@
+Goose True Gosling x Honk Gosling y Honk x honK honK
+Goose False Gosling x Honk Gosling y Honk y honK honK
+Goose If Gosling test Honk Gosling then Honk Gosling else Honk else HONK then HONK test honK honK honK
+Goose Cons Gosling car Honk Gosling cdr Honk Gosling s Honk cdr HONK car HONK s honK honK honK
+Goose Car Gosling pair Honk True HONK pair honK Goose Cdr Gosling pair Honk False HONK pair honK
+
+Goose list False HONK True HONK Cons
+list HONK Cdr HONK Car
+list HONK Car

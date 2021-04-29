@@ -57,10 +57,7 @@ func tokenize(words []string) []Token {
 
 	for i, word := range words {
 		tokens[i] = scan(word)
-		printToken(tokens[i])
 	}
-
-	fmt.Println()
 
 	return tokens
 }

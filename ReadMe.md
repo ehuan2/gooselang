@@ -14,7 +14,7 @@ Here are the commands:
 | FLY | exits the program immediately | FLY |
 
 It runs through the entire file, printing each structure that is not within a Goose structure. Note that Goose's must be declared before use.
-Also, HONK is right applied first, so x HONK y HONK z => (x (y z))
+Also, HONK is reversed, ie if it's f(a), we write a HONK f, f(a)(b), b HONK a HONK f
 
 Usage:
 ```

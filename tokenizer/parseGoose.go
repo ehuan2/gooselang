@@ -92,13 +92,6 @@ func doParse(sexp SExp) (AST.AST) {
 			// in case that it's a HONK
 			arg := doParse(list.rest.first)
 			fnSExp := list.rest.rest.first
-
-			// now the third argument must be a function, ie a list
-			// if not, then return false ast
-			if fnSExp.getType() != LIST {
-				return AST.BadAst{}
-			}
-
 			fn := doParse(fnSExp)
 			return AST.MakeHonk(fn, arg)
 

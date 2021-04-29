@@ -10,6 +10,7 @@ import (
 
 func Repl(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	interpreter.InitStore()
 
 	for {
 		fmt.Printf("> ")
@@ -23,7 +24,15 @@ func Repl(in io.Reader, out io.Writer) {
 		asts := tokenizer.Parse(line)
 
 		for _, ast := range asts {
-			interpreter.Interp(ast)
+			ast.PrintAST()
+			fmt.Println()
+			out, val := interpreter.Interp(ast)
+			fmt.Printf("Out: ")
+			out.PrintAST()
+			fmt.Println()
+			fmt.Printf("Val: ")
+			val.PrintVal()
+			fmt.Println()
 		}
 
 	}

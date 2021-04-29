@@ -1,1 +1,6 @@
-Goose True Gosling x Honk Gosling y honK honK
+Goose True Gosling x Honk Gosling y Honk x honK honK
+Goose False Gosling x Honk Gosling y Honk y honK honK
+Goose If Gosling test Honk Gosling then Honk Gosling else Honk else HONK test HONK then honK honK honK
+
+If
+false HONK true HONK True HONK If

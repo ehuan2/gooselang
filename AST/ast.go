@@ -60,6 +60,14 @@ func (ast Gosling) GetGosling() Gosling {
 	return ast
 }
 
+func (gos Gosling) GetBody() AST {
+	return gos.body
+}
+
+func (gos Gosling) GetParam() string {
+	return gos.param
+}
+
 // an anonymous function
 type Gosling struct {
 	body  AST
@@ -85,6 +93,12 @@ func (g Goose) GetType() ASTType {
 func (ast Goose) GetGoose() Goose {
 	return ast
 }
+func (g Goose) GetName() string {
+	return g.name
+}
+func (g Goose) GetValue() AST {
+	return g.value
+}
 // a global function
 type Goose struct {
 	name  string
@@ -107,6 +121,9 @@ func (g Var) GetType() ASTType {
 func (ast Var) GetVar() Var {
 	return ast
 }
+func (v Var) GetName() string {
+	return v.name	
+}
 type Var struct {
 	name string
 	notGosling
@@ -116,11 +133,11 @@ type Var struct {
 }
 
 func (a Honk) PrintAST() {
-	fmt.Printf("HONK(")
+	fmt.Printf("HONK(Fn(")
 	a.fn.PrintAST()
-	fmt.Printf(")(")
+	fmt.Printf(")Arg(")
 	a.arg.PrintAST()
-	fmt.Printf(")")
+	fmt.Printf("))")
 }
 func MakeHonk(fn AST, arg AST) Honk {
 	return Honk{fn: fn, arg: arg}
@@ -130,6 +147,12 @@ func (g Honk) GetType() ASTType {
 }
 func (ast Honk) GetHonk() Honk {
 	return ast
+}
+func (honk Honk) GetFn() AST {
+	return honk.fn
+}
+func (honk Honk) GetArg() AST {
+	return honk.arg
 }
 // an application of one function on another
 type Honk struct {
@@ -166,9 +189,6 @@ func (b BadAst) PrintAST() {
 }
 func (g BadAst) GetType() ASTType {
 	return AST_BAD
-}
-func (ast BadAst) GetBadAst() BadAst {
-	return ast
 }
 type BadAst struct {
 	notFly

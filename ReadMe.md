@@ -11,12 +11,10 @@ Here are the commands:
 | HONK | applies an argument to a function | fn HONK arg |
 | Hatch | turns some specially structured functions into a Go number and prints it | see more about lambda calculus' representation of binary representation of numbers |
 | Lay | turns a Go natural number into a specially structured function of lambda calculus' binary representation | see more about lambda calculus |
-<!-- | HonK | represents true, ie HonK = Fowl x Honk Fowl y x honK honK | use as normal | -->
-<!-- | hONk | represents false, ie hONk = Fowl x Honk Fowl y y honK honK | use as normal | -->
-<!-- | HoNk |  -->
 | FLY | exits the program immediately | FLY |
 
 It runs through the entire file, printing each structure that is not within a Goose structure. Note that Goose's must be declared before use.
+Also, HONK is right applied first, so x HONK y HONK z => (x (y z))
 
 Usage:
 ```

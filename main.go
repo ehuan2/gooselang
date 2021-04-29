@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"gooselang/interpreter"
 	"gooselang/repl"
 	"gooselang/tokenizer"
 	"os"
@@ -33,9 +35,19 @@ func main() {
 
 		file.Close()
 
+		interpreter.InitStore()
+
 		asts := tokenizer.Parse(outString)
 		for _, ast := range asts {
 			ast.PrintAST()
+			fmt.Println()
+			out, val := interpreter.Interp(ast)
+			fmt.Printf("Out: ")
+			out.PrintAST()
+			fmt.Println()
+			fmt.Printf("Val: ")
+			val.PrintVal()
+			fmt.Println()
 		}
 		
 	}

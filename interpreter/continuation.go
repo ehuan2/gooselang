@@ -19,7 +19,7 @@ const (
 type Cont interface {
 	getAst() AST.AST
 	getEnv() Env
-	getVal() AST.AST
+	getVal() Val
 	getType() ContType
 	getContext() Cont
 }
@@ -33,8 +33,8 @@ func (a notAppL) getEnv() Env {
 }
 type notAppL struct {}
 
-func (a notAppR) getVal() AST.AST {
-	return AST.BadAst{}
+func (a notAppR) getVal() Val {
+	return BadVal{}
 }
 type notAppR struct {}
 
@@ -72,7 +72,7 @@ type AppL struct {
 func (a AppR) getType() ContType {
 	return APPR
 }
-func (a AppR) getVal() AST.AST {
+func (a AppR) getVal() Val {
 	return a.val
 }
 func (a AppR) getContext() Cont {
@@ -80,7 +80,7 @@ func (a AppR) getContext() Cont {
 }
 type AppR struct {
 	notAppL
-	val AST.AST
+	val Val
 	context Cont
 }
 
@@ -88,7 +88,7 @@ func wrapAppL(ast AST.AST, env Env, context Cont) Cont {
 	return AppL{ast: ast, env: env, context: context}
 }
 
-func wrapAppR(val AST.AST, context Cont) Cont {
+func wrapAppR(val Val, context Cont) Cont {
 	return AppR{val: val, context: context}
 }
 
@@ -105,7 +105,7 @@ func printCont(cont Cont) {
 			fmt.Printf(")")
 		case APPR:
 			fmt.Printf("(AppR ")
-			cont.getVal().PrintAST()
+			cont.getVal().PrintVal()
 			fmt.Printf(" ")
 			printCont(cont.getContext())
 			fmt.Printf(")")

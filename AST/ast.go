@@ -16,7 +16,33 @@ const (
 type AST interface {
 	PrintAST()
 	GetType() ASTType
+	GetGosling() Gosling
+	GetGoose() Goose
+	GetVar() Var
+	GetHonk() Honk
+	GetFly() Fly
 }
+
+func (g notGosling) GetGosling() Gosling {
+	return Gosling{}
+}
+type notGosling struct {}
+func (g notGoose) GetGoose() Goose {
+	return Goose{}
+}
+type notGoose struct {}
+func (g notVar) GetVar() Var {
+	return Var{}
+}
+type notVar struct {}
+func (g notHonk) GetHonk() Honk {
+	return Honk{}
+}
+type notHonk struct {}
+func (g notFly) GetFly() Fly {
+	return Fly{}
+}
+type notFly struct {}
 
 func (f Gosling) PrintAST() {
 	fmt.Printf("Gosling(%s ", f.param)
@@ -30,10 +56,18 @@ func (g Gosling) GetType() ASTType {
 	return AST_GOSLING
 }
 
+func (ast Gosling) GetGosling() Gosling {
+	return ast
+}
+
 // an anonymous function
 type Gosling struct {
 	body  AST
 	param string
+	notGoose
+	notFly
+	notHonk
+	notVar
 }
 
 func (g Goose) PrintAST() {
@@ -48,10 +82,17 @@ func (g Goose) GetType() ASTType {
 	return AST_GOOSE
 }
 
+func (ast Goose) GetGoose() Goose {
+	return ast
+}
 // a global function
 type Goose struct {
 	name  string
 	value AST
+	notGosling
+	notFly
+	notHonk
+	notVar
 }
 
 func (v Var) PrintAST() {
@@ -63,8 +104,15 @@ func MakeVar(name string) Var {
 func (g Var) GetType() ASTType {
 	return AST_VAR
 }
+func (ast Var) GetVar() Var {
+	return ast
+}
 type Var struct {
 	name string
+	notGosling
+	notFly
+	notHonk
+	notGoose
 }
 
 func (a Honk) PrintAST() {
@@ -80,11 +128,17 @@ func MakeHonk(fn AST, arg AST) Honk {
 func (g Honk) GetType() ASTType {
 	return AST_HONK
 }
-
+func (ast Honk) GetHonk() Honk {
+	return ast
+}
 // an application of one function on another
 type Honk struct {
 	fn  AST
 	arg AST
+	notGosling
+	notFly
+	notVar
+	notGoose
 }
 
 func (f Fly) PrintAST() {
@@ -97,7 +151,15 @@ func (g Fly) GetType() ASTType {
 	return AST_FLY
 }
 
-type Fly struct{}
+func (ast Fly) GetFly() Fly {
+	return ast
+}
+type Fly struct {
+	notGosling
+	notHonk
+	notVar
+	notGoose
+}
 
 func (b BadAst) PrintAST() {
 	fmt.Printf("Bad GooseLang")
@@ -105,4 +167,13 @@ func (b BadAst) PrintAST() {
 func (g BadAst) GetType() ASTType {
 	return AST_BAD
 }
-type BadAst struct{}
+func (ast BadAst) GetBadAst() BadAst {
+	return ast
+}
+type BadAst struct {
+	notFly
+	notGosling
+	notHonk
+	notVar
+	notGoose
+}

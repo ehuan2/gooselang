@@ -3,6 +3,7 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"gooselang/interpreter"
 	"gooselang/tokenizer"
 	"io"
 )
@@ -22,12 +23,7 @@ func Repl(in io.Reader, out io.Writer) {
 		asts := tokenizer.Parse(line)
 
 		for _, ast := range asts {
-			ast.PrintAST()
-			fmt.Println()
-		}
-
-		if line == "FLY" {
-			return
+			interpreter.Interp(ast)
 		}
 
 	}

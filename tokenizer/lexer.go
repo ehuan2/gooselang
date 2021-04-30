@@ -33,11 +33,11 @@ func scan(word string) Token {
 		token.tokenType = DONE
 		token.value = "Fly away little goose"
 		return token
-	case "Goose":
+	case "HoNK":
 		token.tokenType = GOOSE
 		token.value = "Goose"
 		return token
-	case "Gosling":
+	case "HoNk":
 		token.tokenType = GOSLING
 		token.value = "Gosling"
 		return token

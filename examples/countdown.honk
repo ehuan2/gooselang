@@ -1,13 +1,15 @@
-Goose True Gosling x Honk Gosling y Honk x honK honK
-Goose False Gosling x Honk Gosling y Honk y honK honK
-Goose Cons Gosling car Honk Gosling cdr Honk Gosling s Honk cdr HONK car HONK s honK honK honK
-Goose Car Gosling pair Honk True HONK pair honK Goose Cdr Gosling pair Honk False HONK pair honK
+HoNK True HoNk x Honk HoNk y Honk x honK honK
+HoNK False HoNk x Honk HoNk y Honk y honK honK
+HoNK Cons HoNk car Honk HoNk cdr Honk HoNk s Honk cdr HONK car HONK s honK honK honK
+HoNK Car HoNk pair Honk True HONK pair honK HoNK Cdr HoNk pair Honk False HONK pair honK
 
-Goose Y Gosling f Honk Gosling x Honk f HONK x HONK x honK HONK Gosling x Honk f HONK x HONK x honK honK
-Goose empty Gosling x Honk True honK
-Goose zero empty
-Goose empty? Gosling num Honk Gosling a Honk Gosling b Honk False honK honK HONK num honK
-Goose zero? empty?
+HoNK Y HoNk f Honk HoNk x Honk f HONK x HONK x honK HONK HoNk x Honk f HONK x HONK x honK honK
+HoNK empty HoNk x Honk True honK
+HoNK zero empty
+HoNK empty? HoNk num Honk HoNk a Honk HoNk b Honk False honK honK HONK num honK
+HoNK zero? empty?
 
-Goose list zero HONK True HONK Cons
+HoNK reverseApply HoNk a Honk HoNk b Honk a HONK c HONK b honK honK
+
+HoNK list zero HONK True HONK Cons
 list HONK empty?

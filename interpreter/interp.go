@@ -119,12 +119,10 @@ func applyCont() bouncerType {
 
 	switch contType {
 		case APPL:
-			// we replace the environment with the previous one
-			// we go right, and interpret the right side argument now
-			arg := cont.getAst()
+			arg := cont.getAst() // argument is our function
 			env = cont.getEnv()
 			context := cont.getContext()
-			val = makeValAST(arg)
+			val = makeValAST(expr)
 			cont = wrapAppR(val, context)
 			return BOUNCER_CONT
 		case APPR:
@@ -138,15 +136,25 @@ func applyCont() bouncerType {
 					break
 				}
 				if unwrap.GetType() != AST.AST_VAR {
+					// if unwrap.GetType() == AST.AST_HONK {
+					// 	// this means our function is a application
+					// 	// so we go down the tree, it's a left application
+					// 	honk := unwrap.GetHonk()
+					// 	expr = honk.GetFn()
+					// 	cont = wrapAppL(honk.GetArg(), env, cont)
+					// 	return BOUNCER_CONT
+					// }
+
 					break
 				}
 				curVal = lookupGlobal(unwrap.GetVar().GetName())
 			}
 
-			// must be a closure
 			if curVal.getType() != VAL_CLOSURE {
 				fmt.Println("\nThis is the next val:")
 				curVal.PrintVal()
+				fmt.Println("\nThis is the continuation")
+				printCont(cont)
 				fmt.Println("\nBad Gooselang encountered, not a proper function")
 				val = BadVal{}
 				return BOUNCER_EXIT

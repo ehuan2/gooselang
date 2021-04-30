@@ -7,6 +7,9 @@ Goose Cdr Gosling pair Honk pair HONK False honK
 Goose empty? Gosling num Honk num HONK Gosling a Honk Gosling b Honk False honK honK honK
 Goose empty Gosling x Honk True honK
 
+Goose True Gosling x Honk Gosling y Honk x honK honK
+Goose False Gosling x Honk Gosling y Honk y honK honK
+
 Goose reduce 
   Y HONK Gosling reduceLst Honk
     Gosling lst Honk

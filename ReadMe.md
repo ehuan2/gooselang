@@ -1,5 +1,5 @@
 ## Gooselang
-This is Gooselang! An esoteric functional (complete) language with lazy evaluation. It supports both anonymous functions and global functions. All functions must take in a single parameter, ie it's curried.
+This is Gooselang! An esoteric functional (complete) language with ~~lazy~~ not lazy :( (I'll work on this) evaluation. It supports both anonymous functions and global functions. All functions must take in a single parameter, ie it's curried.
 
 Here are the commands:
 | Syntax | Description | usage |

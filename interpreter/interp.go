@@ -76,10 +76,6 @@ func interpHelper() bouncerType {
 			// cont stays, we replace val with it's value from lookup
 			inVar := expr.GetVar()
 			val = lookupGlobal(inVar.GetName())
-			if val.getType() == VAL_AST {
-				expr = val.getAST().ast
-				return BOUNCER_INTERP
-			}
 			return BOUNCER_CONT
 		case AST.AST_FLY:
 			// we don't stop execution here, we stop execution when we apply empty continuation to FLY
@@ -119,43 +115,19 @@ func applyCont() bouncerType {
 
 	switch contType {
 		case APPL:
-			arg := cont.getAst() // argument is our function
+			// we replace the environment with the previous one
+			// we go right, and interpret the right side argument now
+			arg := cont.getAst()
 			env = cont.getEnv()
 			context := cont.getContext()
-			val = makeValAST(expr)
+			expr = arg
 			cont = wrapAppR(val, context)
-			return BOUNCER_CONT
+			return BOUNCER_INTERP
 		case APPR:
 			curVal := cont.getVal()
-
-			for curVal.getType() == VAL_AST {
-				unwrap := curVal.getAST().ast
-				if unwrap.GetType() == AST.AST_GOSLING {
-					unwrapGosling := unwrap.GetGosling()
-					curVal = makeClosure(unwrapGosling.GetParam(), unwrapGosling.GetBody(), env)
-					break
-				}
-				if unwrap.GetType() != AST.AST_VAR {
-					// if unwrap.GetType() == AST.AST_HONK {
-					// 	// this means our function is a application
-					// 	// so we go down the tree, it's a left application
-					// 	honk := unwrap.GetHonk()
-					// 	expr = honk.GetFn()
-					// 	cont = wrapAppL(honk.GetArg(), env, cont)
-					// 	return BOUNCER_CONT
-					// }
-
-					break
-				}
-				curVal = lookupGlobal(unwrap.GetVar().GetName())
-			}
-
+			// must be a closure
 			if curVal.getType() != VAL_CLOSURE {
-				fmt.Println("\nThis is the next val:")
-				curVal.PrintVal()
-				fmt.Println("\nThis is the continuation")
-				printCont(cont)
-				fmt.Println("\nBad Gooselang encountered, not a proper function")
+				fmt.Println("Bad Gooselang encountered, not a proper function")
 				val = BadVal{}
 				return BOUNCER_EXIT
 			}

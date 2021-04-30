@@ -76,6 +76,10 @@ func interpHelper() bouncerType {
 			// cont stays, we replace val with it's value from lookup
 			inVar := expr.GetVar()
 			val = lookupGlobal(inVar.GetName())
+			if val.getType() == VAL_AST {
+				expr = val.getAST().ast
+				return BOUNCER_INTERP
+			}
 			return BOUNCER_CONT
 		case AST.AST_FLY:
 			// we don't stop execution here, we stop execution when we apply empty continuation to FLY
@@ -120,14 +124,30 @@ func applyCont() bouncerType {
 			arg := cont.getAst()
 			env = cont.getEnv()
 			context := cont.getContext()
-			expr = arg
+			val = makeValAST(arg)
 			cont = wrapAppR(val, context)
-			return BOUNCER_INTERP
+			return BOUNCER_CONT
 		case APPR:
 			curVal := cont.getVal()
+
+			for curVal.getType() == VAL_AST {
+				unwrap := curVal.getAST().ast
+				if unwrap.GetType() == AST.AST_GOSLING {
+					unwrapGosling := unwrap.GetGosling()
+					curVal = makeClosure(unwrapGosling.GetParam(), unwrapGosling.GetBody(), env)
+					break
+				}
+				if unwrap.GetType() != AST.AST_VAR {
+					break
+				}
+				curVal = lookupGlobal(unwrap.GetVar().GetName())
+			}
+
 			// must be a closure
 			if curVal.getType() != VAL_CLOSURE {
-				fmt.Println("Bad Gooselang encountered, not a proper function")
+				fmt.Println("\nThis is the next val:")
+				curVal.PrintVal()
+				fmt.Println("\nBad Gooselang encountered, not a proper function")
 				val = BadVal{}
 				return BOUNCER_EXIT
 			}

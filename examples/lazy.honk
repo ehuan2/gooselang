@@ -1,0 +1,25 @@
+Goose f Gosling y Honk Gosling x Honk x honK HONK y honK
+Goose Y Gosling f Honk Gosling x Honk f HONK x HONK x honK HONK Gosling x Honk f HONK x HONK x honK honK
+
+Goose Cons Gosling car Honk Gosling cdr Honk Gosling s Honk Gosling s-a Honk s-a HONK cdr honK HONK s HONK a honK honK honK
+Goose Car Gosling pair Honk pair HONK True honK 
+Goose Cdr Gosling pair Honk pair HONK False honK
+Goose empty? Gosling num Honk num HONK Gosling a Honk Gosling b Honk False honK honK honK
+Goose empty Gosling x Honk True honK
+
+Goose reduce 
+  Y HONK Gosling reduceLst Honk
+    Gosling lst Honk
+      Gosling bool Honk
+        Gosling truestmt Honk
+          truestmt HONK reduceLst HONK Cdr HONK lst
+        honK
+        HONK bool HONK FLY
+      honK
+      HONK if HONK empty? HONK lst
+    honK
+  honK
+
+Gosling f Honk f HONK empty honK HONK Cons HONK True
+Goose consTrue Gosling list Honk Gosling f Honk f HONK list honK HONK Cons HONK True honK
+Goose list consTrue HONK empty

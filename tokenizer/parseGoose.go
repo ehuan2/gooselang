@@ -93,7 +93,7 @@ func doParse(sexp SExp) (AST.AST) {
 			fnSExp := list.rest.rest.first
 			fn := doParse(fnSExp)
 			// we reverse it
-			return AST.MakeHonk(arg, fn)
+			return AST.MakeHonk(fn, arg)
 
 		}
 		

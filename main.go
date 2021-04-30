@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"gooselang/AST"
 	"gooselang/interpreter"
 	"gooselang/repl"
 	"gooselang/tokenizer"
@@ -40,11 +39,13 @@ func main() {
 
 		asts := tokenizer.Parse(outString)
 		for _, ast := range asts {
+			ast.PrintAST()
+			fmt.Println()
 			_, val := interpreter.Interp(ast)
-			if ast.GetType() != AST.AST_GOOSE {
+			// if ast.GetType() != AST.AST_GOOSE {
 				val.PrintVal()
 				fmt.Println()
-			}
+			// }
 		}
 		
 	}

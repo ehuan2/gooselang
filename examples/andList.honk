@@ -9,27 +9,26 @@ Goose zero empty
 Goose empty? Gosling num Honk Gosling a Honk Gosling b Honk False honK honK HONK num honK
 Goose zero? empty?
 
-Goose reverseApply Gosling a Honk Gosling b Honk a HONK c HONK b honK honK
-
-Goose add1
-    Gosling self Honk
-      Gosling x Honk
-      
-            false
-
+Goose andList
+  Y HONK
+  Gosling and-lst Honk
+    Gosling lst Honk
+      Gosling bool Honk
+        Gosling truestmt Honk
+          truestmt HONK
+          Gosling bool2 Honk
+            Gosling truestmt2 Honk
+              truestmt2 HONK False
+            honK
+            HONK
+            bool2 HONK and-lst HONK Cdr HONK lst
+          honK
           HONK
-            HoNk cdrx Honk
-              cdrx HONK True HONK Cons
-            honK HONK cdr HONK x
-
-          HONK x HONK Car
-          
+          if HONK car HONK lst
+        honK
         HONK
-          z HONK True HONK Cons
-        HONK x HONK z?
+        bool HONK True
       honK
+      HONK if HONK empty? HONK lst
     honK
-  HONK Y
-
-Goose Gosling zero HONK True HONK Cons
-list HONK empty?
+  honK
